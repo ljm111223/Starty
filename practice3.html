@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tables</title>
+    <style>
+        table{
+            margin: 30px auto;
+            width: 600px;
+            /*设置对齐方式*/
+            text-align: left;
+            font-family: Arial;
+            /*边框合并成一个单一的边框*/
+            border-collapse: collapse;
+            /*设置边框的距离*/
+            border-spacing: 0px;
+        }
+        #table1{
+            border: #cccccc solid 1px ;
+        }
+        .thead1{
+            background-color: #4caf50;
+            color: white;
+        }
+
+        th,td{
+            padding: 8px;
+        }
+
+        .tbody1,.tbody2{
+            color: #4caf50;
+            border-bottom: #dddddd solid 1px;
+            border-top:  #dddddd solid 1px;
+        }
+        .tbody2{
+            background-color: #f1f1f1;
+        }
+
+    </style>
+</head>
+<body>
+    <table id="table1">
+        <thead>
+        <tr class="thead1">
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Points</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="tbody2">
+            <td>Jill</td>
+            <td>Smith</td>
+            <td>50</td>
+        </tr>
+        <tr class="tbody1">
+            <td>Eve</td>
+            <td>Jackson</td>
+            <td>94</td>
+        </tr>
+        <tr class="tbody2">
+            <td>Adam</td>
+            <td>Johnson</td>
+            <td>67</td>
+        </tr>
+        <tr class="tbody1">
+            <td>Bo</td>
+            <td>Nilsson</td>
+            <td>50</td>
+        </tr>
+        <tr class="tbody2">
+            <td>Mike</td>
+            <td>Ross</td>
+            <td>35</td>
+        </tr>
+        </tbody>
+    </table>
+    <table id="table2">
+        <thead>
+        <tr class="thead2">
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Points</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="tbody2">
+            <td>Jill</td>
+            <td>Smith</td>
+            <td>50</td>
+        </tr>
+        <tr class="tbody1">
+            <td>Eve</td>
+            <td>Jackson</td>
+            <td>94</td>
+        </tr>
+        <tr class="tbody2">
+            <td>Adam</td>
+            <td>Johnson</td>
+            <td>67</td>
+        </tr>
+        <tr class="tbody1">
+            <td>Bo</td>
+            <td>Nilsson</td>
+            <td>50</td>
+        </tr>
+        <tr class="tbody2">
+            <td>Mike</td>
+            <td>Ross</td>
+            <td>35</td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

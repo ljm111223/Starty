@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>practice2</title>
+    <style>
+        #div1{
+            /*用auto去居中，但必须要设置宽度先*/
+            margin: 30px auto;
+            width: 600px;
+
+        }
+        a{
+            /*去掉链接的下划线*/
+            text-decoration: none;
+            padding:10px;
+            margin: 2px;
+            /*圆角*/
+            border-radius:3px ;
+            /*鼠标放上去显示手指*/
+            cursor: pointer;
+            /*效果出现时间*/
+            transition: all 0.3s;
+        }
+
+        #a1{
+            background-color: #009688;
+            color: white;
+        }
+        #a2{
+            background-color: #ffeb3b;
+            color: black;
+        }
+        #a3{
+            background-color: #ff9800;
+            color: black;
+        }
+        #a4{
+            background-color: #f44336;
+            color: white;
+        }
+        #a5{
+            background-color: #4caf50;
+            color: white;
+        }
+        /*鼠标放上去后的效果*/
+        a:hover{
+            box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.2),0px 6px 12px 0px rgba(0,0,0,0.19);
+        }
+    </style>
+</head>
+<body>
+<div id="div1">
+    <a href id="a1">steal</a>
+    <a href id="a2">yellow</a>
+    <a href id="a3">orange</a>
+    <a href id="a4">red</a>
+    <a href id="a5">green</a>
+</div>
+</body>
+</html>
