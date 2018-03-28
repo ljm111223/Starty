@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <style>
+    #content::after{
+      content:"";
+      dispaly:block;
+      clear:both;
+    }
+    
+    #leftbox{
+      background:red;
+      height:400px;
+      float:left;
+      width:200px;
+    }
+    #rightbox{
+      margin-left:210px;
+      background:blue;
+      height:500px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="content">
+    <div id="leftbox">
+    
+  </div>
+  <div id="rightbox">
+    
+  </div>
+  </div>
+
+</body>
+</html>
