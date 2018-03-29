@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://js.jirengu.com
+
+Copyright (c) 2018 by anonymous (http://js.jirengu.com/zohevaqagu/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <style>
+  </style>
+  <style>
+    .box{
+      position:relative;
+      margin:50px;
+      width:180px;
+      height:100px;
+      border:1px gray solid;
+    }
+ 
+    .p1::before{
+      position:absolute;
+      top:-10px;
+      left:10px;
+      border:10px gray solid;
+      border-bottom:10px white solid;
+      border-right:10px white solid;
+      transform:rotate(45deg);
+      content:"";
+      display:block;
+      width:0px;
+      height:0px;
+      
+    }
+    .p2::before{
+      position:absolute;
+      right:-1px;
+      top:-1px;
+      border:10px red solid;
+      border-bottom:10px white solid;
+      border-right:10px white solid;
+      transform:rotate(90deg);
+      content:"";
+      display:block;
+      width:0px;
+      height:0px;
+    }
+    
+    .p3::before{
+      position:absolute;
+      top:-11.5px;
+      left:12px;
+      border:1px gray solid;
+      border-bottom:1px white solid;
+      border-right:1px white solid;
+      transform:rotate(45deg);
+      content:"";
+      display:block;
+      background:white;
+      width:20px;
+      height:20px;
+      
+    }
+  </style>
+</head>
+<body>
+  <div class="box p1">
+    
+  </div>
+  <div class="box p2">
+    
+  </div>
+  
+  <div class="box p3">
+    
+  </div>
+</body>
+</html>
