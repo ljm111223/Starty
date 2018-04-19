@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dom1</title>
+    <style>
+        .big-box,
+        .middle-box,
+        .small-box,
+        .stop{
+            border: 1px solid lightblue;
+            padding: 50px;
+            color: #f7ba3e;
+        }
+    </style>
+</head>
+<body>
+<div class="big-box">
+    Big Box
+    <div class="middle-box">
+        Middle Box
+        <div class="small-box">
+            Small Box
+        </div>
+
+    </div>
+</div>
+<div class="stop">click here to stop propagation </div>
+
+<script>
+    var bigBox = document.querySelector( '.big-box') ;
+    var middleBox = document.querySelector( '.middle-box') ;
+    var smallBox = document.querySelector( '.small-box') ;
+    var stop = document.querySelector('.stop');
+    function middleBoxClick(){
+        console.log( 'Middle Box here ...in 冒泡阶段' )
+    }
+    bigBox.addEventListener('click',function(){
+        console.log( 'Big Box here ..in 冒泡阶段.' )
+    });
+    middleBox.addEventListener('click',middleBoxClick);
+    smallBox.addEventListener('click',function(){
+        console.log( 'Small Box here ...in 冒泡阶段' )
+    });
+    bigBox.addEventListener('click',function(){
+        console.log( 'Big Box here ...in 捕获阶段' )
+    },true);
+    middleBox.addEventListener('click',function(){
+        console.log( 'Middle Box here ...in 捕获阶段' )
+    },true);
+    smallBox.addEventListener('click',function(){
+        console.log( 'Small Box here ...in 捕获阶段' )
+    },true);
+    stop.addEventListener('click',function(){
+        console.log('将在Middle Box的冒泡阶段结束传播 ...');
+        middleBox.removeEventListener('click',middleBoxClick);
+        middleBox.addEventListener('click',function(e){
+            console.log( 'Middle Box here ...in 冒泡阶段' );
+            e.stopPropagation();
+            console.log('传播中止...')
+        })
+    })
+
+
+</script>
+</body>
+</html>
