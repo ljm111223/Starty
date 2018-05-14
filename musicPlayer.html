@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>音乐播放器</title>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .cover{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            content: '';
+            display: block;
+            background: url("http://i1.hdslb.com/bfs/archive/874662fc04181e42837cb45459d871648e0ca427.jpg") center center no-repeat;
+            background-size: cover;
+            filter: blur(5px);
+        }
+        .musicbox{
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%,-50%);
+            font-family: cursive;
+            font-size: 16px;
+            color: #f06d6a;
+            width: 340px;
+        }
+        .music-panel{
+            border: 1px solid #76dba3;
+            padding: 20px 20px 5px 20px;
+            box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.1),0px 2px 10px 0px rgba(0,0,0,0.05);
+            background-color: rgba(255,255,255,0.9);
+        }
+
+        .musicbox .control{
+            /*margin-top:20px;*/
+            font-size:27px;
+            color:#ee8a87;
+            float: left;
+        }
+
+        .musicbox .control .fa{
+            margin-right: 12px;
+        }
+
+        .musicbox .control .fa.disable {
+            opacity:0.3;
+        }
+
+        .musicbox .info{
+            margin-left: 150px;
+            /*margin-top:20px;*/
+            margin-bottom: 20px;
+        }
+
+        .musicbox .info .title{
+            font-size: 20px;
+        }
+
+        .musicbox .info .singer{
+            font-size: 16px;
+        }
+
+        .musicbox .progress{
+            width: 260px;
+        }
+
+        .musicbox .progress .bar{
+            height: 3px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .musicbox .progress .progress-now {
+            background-color: #ee8a87;
+            height: 3px;
+            width: 0;
+            position: relative;
+        }
+
+        .musicbox .time{
+            text-align: right;
+        }
+
+        .musicbox:after,
+        .musicbox .music:after{
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .list {
+            margin: 0px;
+            padding: 0;
+        }
+        .list li {
+            padding: 5px 5px 5px 10px;
+            list-style: none;
+            border:1px rgba(255,255,255,0.6) solid;
+        }
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+<div class="cover"></div>
+<div class="musicbox">
+    <div class="music-panel">
+        <div class="music">
+            <div class="control">
+                <span class="back"><i class="fa fa-step-backward"></i></span>
+                <span class="play"><i class="fa fa-play"></i></span>
+                <span class="forward"><i class="fa fa-step-forward"></i></span>
+            </div>
+            <div class="info">
+                <div class="title"></div>
+                <div class="singer"></div>
+            </div>
+        </div>
+
+        <div class="progress">
+            <div class="bar">
+                <div class="progress-total"></div>
+                <div class="progress-now"></div>
+            </div>
+            <div class="time">0:00</div>
+        </div>
+    </div>
+    <ul class="list">
+        <li>Lemon-迷眩近视</li>
+        <li>melon-伊尔萨</li>
+
+    </ul>
+</div>
+<script type="text/javascript">
+    var musicList =[{
+            "src": "http://fs.w.kugou.com/201805141841/eb8be660290dae9d573f9e79bd560a46/G128/M09/10/05/IIcBAFqAzN-AIIU2AD5mqrBi2UA864.mp3",
+            "title": "Lemon",
+            "singer": "米玄津师",
+            "img": "http://i1.hdslb.com/bfs/archive/874662fc04181e42837cb45459d871648e0ca427.jpg"
+        }, {
+            "src": "http://fs.w.kugou.com/201805141934/10f765df00eb788936fa9760107d03a4/G059/M02/17/1D/ew0DAFdr9KmAf5GnADSkTnjFCm0437.mp3",
+            "title": "告白气球",
+            "singer": "周杰伦",
+            "img": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526904891&di=24e8d0eb9953546d2049a87cb18a9a47&imgtype=jpg&er=1&src=http%3A%2F%2Ff3.topitme.com%2F3%2F73%2F05%2F1132341906b9805733o.jpg"
+        },
+            {
+                "src": "http://fs.w.kugou.com/201805141923/624ea65cc5085c922df567611164d00d/G101/M06/0B/11/BYcBAFj22peARu_aADfgk2eS26w865.mp3",
+                "title": "Despacito",
+                "singer": "Justin Beber",
+                "img": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526309364179&di=ca77c8d349ef2c481e34dab92e8af731&imgtype=0&src=http%3A%2F%2Fp11.aipai.com%2Fphoto%2F667%2F35425667%2Fphoto%2F57%2F3183673%2F3183673_normal.jpg"
+            }
+           ]
+    ;
+    var currentIndex = 0;
+    var audio = new Audio();
+    audio.autoplay = true;
+    audio.ontimeupdate = function(){
+        $(".progress-now").style.width = ( this.currentTime/this.duration )*100 + "%"
+        var min = Math.floor(this.currentTime/60)
+
+        var sec = Math.floor(this.currentTime%60)
+        if(sec < 10){
+            sec = '0'+sec
+        }
+        $(".progress .time").innerText = min+ ':'+sec
+    }
+
+    $( '.musicbox .play' ).onclick  = function () {
+        if (audio.paused){
+            audio.play()
+            $( '.musicbox .play .fa' ).classList.add('fa-pause')
+            $( '.musicbox .play .fa' ).classList.remove('fa-play')
+        }else{
+            $( '.musicbox .play .fa' ).classList.add('fa-play')
+            $( '.musicbox .play .fa' ).classList.remove('fa-pause')
+            audio.pause()
+        }
+    }
+    $( '.musicbox .forward' ).onclick  = function () {
+        var i = (++currentIndex)%musicList.length
+        play( musicList[ i ] )
+    }
+
+    $( '.musicbox .back' ).onclick  = function () {
+        var i = (--currentIndex + musicList.length)%musicList.length
+        play( musicList[ i ] )
+
+    }
+
+    $('.musicbox .bar').onclick = function (ev) {
+        $('.musicbox .bar .progress-now').style.width = ev.offsetX /parseInt(getComputedStyle( this).width)*100 + "%"
+        audio.currentTime = ev.offsetX /parseInt(getComputedStyle( this).width)*audio.duration
+    }
+
+    $('.musicbox .list').onclick = function (ev) {
+        if(ev.target.tagName.toLowerCase() === 'li'){
+            for(var i = 0; i < this.children.length; i++){
+                if(this.children[i] === ev.target){
+                    currentIndex = i
+                }
+            }
+        play(musicList[currentIndex])
+    }
+    }
+    function load(){
+        var lis = ''
+        for (i in musicList){
+            lis +='<li>'+musicList[i].title+  '-' + musicList[i].singer+'</li>'
+        }
+        $( '.list' ).innerHTML = lis
+
+    }
+
+    function  chosen( node ) {
+        node.style.color = '#fb610f';
+        node.style.backgroundColor ='rgba(250, 211, 130, 0.6)';
+        node.style.fontSize = '18px';
+    }
+    function  dechosen( node ) {
+        node.style.color = '#f06d6a';
+        node.style.backgroundColor ='rgba(250, 211, 130, 0)';
+        node.style.fontSize = '16px';
+    }
+
+    function $(selector) {
+        return document.querySelector(selector)
+    }
+
+    function play( music ) {
+        audio.src = music.src;
+        $( '.musicbox .title' ).innerText = music.title;
+        $( '.musicbox .singer' ).innerText = music.singer;
+        $('.cover').style.background = 'url("'+ music.img+'") center center no-repeat';
+        $( '.musicbox .play .fa' ).classList.add('fa-pause')
+        $( '.musicbox .play .fa' ).classList.remove('fa-play')
+         for ( i in $('.list').children ){
+
+            if( i == currentIndex ){
+                console.log($('.list').children[i])
+                chosen($('.list').children[i])
+            }else{
+                dechosen($('.list').children[i])
+            }
+
+         }
+        console.log($('.list').children[1])
+    }
+    load()
+    play(musicList[0]);
+
+    $( '.musicbox .play .fa' ).classList.add('fa-play')
+    $( '.musicbox .play .fa' ).classList.remove('fa-pause')
+
+
+
+    
+</script>
+</body>
+</html>
