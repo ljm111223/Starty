@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件练习</title>
+    <style>
+        body{
+            width: 840px;
+            margin: 0 auto;
+            text-align: center;
+            background: #dddddd;
+
+        }
+        .clearfix::after {
+            content: '';
+            clear: both;
+            display: block;
+        }
+        .title{
+            padding: 30px 30px 15px 30px;
+            font-size: 30px;
+            text-align: center;
+            font-family: bold;
+            color: #888888;
+            border-bottom: #444444 1px solid ;
+        }
+        .price{
+            color: #f06d6a;
+        }
+        .list img{
+            display: block;
+            background: url("https://picsum.photos/200/200/?image=99");
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        .thing{
+            float: left;
+            padding: 10px 30px;
+            width: 220px;
+            height: 300px;
+            text-align: center;
+        }
+        .btn{
+            text-decoration: none;
+            color: #ff9800;
+            border: coral 1px solid;
+            padding: 3px;
+            font-size: 20px;
+            margin: 5px;
+        }
+        .isDelete{
+            position: relative;
+        }
+        .isDelete img{
+            opacity: 0.2;
+        }
+        .delete {
+            display: none;
+        }
+        .isDelete .delete{
+            font-size: 20px;
+            text-decoration: none;
+            border: 1px solid #f06d6a;
+            padding: 5px 10px;
+            color: #444444;
+            background-color: white;
+            position: absolute;
+            left: 105px;
+            top: 95px;
+            display: inline-block;
+        }
+
+
+    </style>
+</head>
+<body>
+<p class="title"> 商品列表 </p>
+<div class="list clearfix">
+    <div class="thing">
+        <img src="https://picsum.photos/200/200/?image=92" alt="">
+        <a href="javascript:void(0)"></a>
+        <p>这是第1个</p>
+        <p class="price">￥5555.00</p>
+        <a href="javascript:void(0)" class="delete">删除</a>
+    </div>
+    <div class="thing">
+        <img src="https://picsum.photos/200/200/?image=11" alt="">
+        <p>这是第2个</p>
+        <p class="price">￥5555.00</p>
+        <a href="javascript:void(0)" class="delete">删除</a>
+    </div>
+    <div class="thing">
+        <img src="https://picsum.photos/200/200/?image=18" alt="">
+        <p>这是第3个</p>
+        <p class="price">￥5555.00</p>
+        <a href="javascript:void(0)" class="delete">删除</a>
+    </div>
+</div>
+<div>
+    <a href="javascript:void(0)" class="btn add">添加</a>
+    <a href="javascript:void(0)" class="btn edit">编辑</a>
+</div>
+<script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
+<script>
+    function getProductHtml(){
+        if($('.thing').hasClass('isDelete')){
+            var newHtml ='<div class="thing isDelete">'
+        }else {
+            var newHtml ='<div class="thing">'
+        }
+        newHtml +=    '<img src="' + 'https://picsum.photos/200/200/?image=' + Math.floor(Math.random()*100)+'" alt="">'
+        newHtml += '<p>这是添加的</p><p class="price">￥'+Math.floor(Math.random()*10000)+'.00</p>'
+        newHtml += '<a href="javascript:void(0)" class="delete">删除</a>'
+        return newHtml
+    }
+    $('.add').on('click',function (e){
+        e.preventDefault()
+        for(i=0;i<3;i++){
+            $('.list').append(getProductHtml())
+        }
+    })
+    $('.edit').on('click',function (e){
+        e.preventDefault()
+        $('.thing').toggleClass( 'isDelete' )
+    })
+    $('.list').on( 'click',function(e){
+        if($(e.target).hasClass('delete')){
+            console.log($(e.target).parent())
+            $(e.target).parent().remove()
+        }
+
+    } )
+</script>
+</body>
+</html>
