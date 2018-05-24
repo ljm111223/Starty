@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="never">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1">
+    <title>豆瓣电影</title>
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_676967_h4t7y6h60ts54s4i.css">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        a{
+            text-decoration: none;
+            color: #444444;
+        }
+        h2{
+            font-size: 20px;
+            color: black;
+        }
+        /*html，body{*/
+            /*height: 100%;*/
+        /*}*/
+        body{
+            position: relative;
+            font-size: 12px;
+            line-height: 1.2;
+            background-color: #ffffff;
+        }
+        main{
+            height: calc( 100vh - 50px );
+            overflow: scroll;
+        }
+        main section{
+            padding-top: 6px;
+            padding-left: 7.5px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .item{
+            padding-top: 6px;
+            height:120px;
+            border-bottom:1px solid #cccccc;
+        }
+        .item .rank1{
+            float: right;
+            padding-right: 10px;
+            font-size: 22px;
+            font-family: "Microsoft YaHei UI";
+            font-weight: bold;
+            color: #ff312c;
+        }
+        .item .rank2{
+            float: right;
+            padding-right: 10px;
+            font-size: 22px;
+            font-family: "Microsoft YaHei UI";
+            font-weight: bold;
+            color: #ffa720;
+        }
+        .item .rank3{
+            float: right;
+            padding-right: 10px;
+            font-size: 22px;
+            font-family: "Microsoft YaHei UI";
+            font-weight: bold;
+            color: silver;
+        }
+
+
+
+        .item img{
+            height: 105px;
+            float: left;
+        }
+        .item .detail{
+            margin-left: 80px;
+        }
+        .item .detail .score{
+            color: #ff312c;
+        }
+        .item .detail div{
+            font-size: 14px;
+            padding-top: 0.7vh;
+        }
+
+        .loading{
+            display: none;
+            text-align: center;
+            padding-top: 5px;
+
+        }
+        .loading .iconfont{
+            display: inline-block;
+            animation: 1s rotate linear infinite;
+        }
+        @keyframes rotate {
+            0%{ transform:rotate(0deg); }
+            100%{ transform:rotate(360deg); }
+        }
+        main .na{
+            display: none;
+        }
+
+        footer{
+            border-top: 1px solid #cccccc;
+            position: absolute;
+            height: 50px;
+            width: 100%;
+            display: flex;
+        }
+        footer .active{
+            color: #ff9800;
+        }
+
+        footer>div{
+            color: #222222;
+            padding-top: 6px;
+            font-size: 16px;
+            text-align: center;
+            flex: 1;
+        }
+        footer>div>span{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <section class="top">
+        <div class="container">
+
+        </div>
+        <div class="loading"><span class="iconfont icon-loading1 " ></span></div>
+    </section>
+    <section class="na">
+        <div class="container"></div>
+        <div class="loading"><span class="iconfont icon-loading1 " ></span></div>
+    </section>
+    <section class="search"></section>
+</main>
+<footer>
+    <div class="top active"><span class="iconfont icon-top"></span><span>Top250</span></div>
+    <div class="na"><span class="iconfont icon-na"></span><span>北美</span></div>
+    <div class="search"><span class="iconfont icon-search"></span><span>搜索</span></div>
+</footer>
+
+<script>
+    var indexTop = 0
+    var isLoading = false
+
+    getStarted()
+    $('footer').click(function( e ){
+        if($(e.target).hasClass('active') === false){
+            $(e.target).parent().addClass('active').siblings().removeClass('active')
+            $('main').children().eq($(e.target).parent().index()).css('display','block').siblings().css('display','none')
+        }
+    })
+    $('main').scroll(function () {
+        if( ($('main').scrollTop() - 10 - 120*indexTop >= 1520 )&&( isLoading === false) ){
+
+            indexTop +=20
+            getTop20(indexTop)
+        }
+    })
+    // $('footer .na').click( function(){
+    //     getNa()
+    //     $('main .na').css('display','block').siblings().css('display','none')
+    // } )
+
+
+    function  getStarted() {
+        getTop20(indexTop)
+        getNa()
+        $( 'main .top .container' ).children().eq(0).children().prepend($("<div class=\"rank1\">Top1</div>"))
+        $( 'main .top .container' ).children().eq(1).children().prepend($("<div class=\"rank2\">Top2</div>"))
+        $( 'main .top .container' ).children().eq(2).children().prepend($("<div class=\"rank3\">Top3</div>"))
+        $( 'main .na .container' ).children().eq(0).children().prepend($("<div class=\"rank1\">Top1</div>"))
+        $( 'main .na .container' ).children().eq(1).children().prepend($("<div class=\"rank2\">Top2</div>"))
+        $( 'main .na .container' ).children().eq(2).children().prepend($("<div class=\"rank3\">Top3</div>"))
+    }
+    function getNa(){
+        $('.na .loading').show()
+        $.ajax({
+            url:"http://api.douban.com//v2/movie/us_box",
+            dataType:"jsonp"
+        }).done(function(ret){
+                for(idx in ret.subjects){
+                    // console.log( getInfo(ret.subjects[idx]) )
+                    $('main .na .container').append( $(getInfo(ret.subjects[idx].subject)) )
+                }
+            }
+        ).always(function(){
+            $('.na .loading').hide()
+        })
+    }
+
+    function getTop20( start ){
+        $('.top .loading').show()
+        isLoading = true
+        $.ajax({
+            url:"http://api.douban.com/v2/movie/top250",
+            data:{
+                start:start,
+                count:20
+            },
+            dataType:"jsonp"
+        }).done(function(ret){
+            for(idx in ret.subjects){
+                // console.log( getInfo(ret.subjects[idx]) )
+                $('main .top .container').append( $(getInfo(ret.subjects[idx])) )
+            }
+            }
+        ).always(function(){
+            isLoading = false
+            $('.top .loading').hide()
+        })
+    }
+
+    function getInfo( movie ){
+        info = '<div class="item">' +
+            '          <a href="#">' +
+            '            <div class="cover">' +
+            '              <img src="'+movie.images.small+'" alt="">' +
+            '            </div>' +
+            '            <div class="detail">' +
+            '              <h2>'+movie.title+'</h2>' +
+            '              <div class="extra"><span class="score">'+movie.rating.average+'分</span> / '+movie.collect_count+'收藏</div>' +
+            '              <div class="extra">'+movie.year+' / '+getGenres()+'</div>' +
+            '              <div class="extra">导演：'+getDirectors()+'</div>' +
+            '              <div class="extra">主演：'+getCasts()+'</div>' +
+            '            </div>\n' +
+            '          </a>\n' +
+            '        </div>'
+        function getGenres(){
+            genres = []
+            for( idx in movie.genres){
+                genres.push( movie.genres[idx] )
+                if( idx===1 ){
+                    break
+                }
+            }
+            return genres.join('、')
+        }
+        function getDirectors(){
+            directors = []
+            for( idx in movie.directors){
+                directors.push( movie.directors[idx].name )
+                if( idx===2 ){
+                    break
+                }
+            }
+            return directors.join('、')
+        }
+        function getCasts(){
+            casts = []
+            for( idx in movie.casts){
+                casts.push( movie.casts[idx].name )
+                if( idx===2 ){
+                    break
+                }
+            }
+            if(casts.join('、').length >=20){
+                casts.pop()
+                if( casts.join('、').length >=20 ){
+                    casts.pop()
+                }
+            }
+            return casts.join('、')
+        }
+        return info
+    }
+
+
+</script>
+</body>
+</html>
